@@ -2,7 +2,7 @@ const express = require("express");
 const promotionRouter = express.Router();
 
 promotionRouter
-    .route("promotion")
+    .route("promotions")
     .all((req, res, next) => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "text/plain");
@@ -46,7 +46,7 @@ promotionRouter
         );
     })
     .delete((req, res) => {
-        res.end(`Deleting ${req.params.promotionId} promotion`);
+        res.end(`Deleting ${req.params.promotionId} promotions`);
     });
 
 module.exports = promotionRouter;
