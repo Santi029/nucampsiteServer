@@ -2,7 +2,7 @@ const express = require("express");
 const promotionRouter = express.Router();
 
 promotionRouter
-    .route("promotions")
+    .route("promotion")
     .all((req, res, next) => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "text/plain");
