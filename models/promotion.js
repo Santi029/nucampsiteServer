@@ -25,7 +25,7 @@ const commentSchema = new Schema(
     }
 );
 
-const partnerSchema = new Schema(
+const promotionSchema = new Schema(
     {
         name: {
             type: String,
@@ -40,6 +40,11 @@ const partnerSchema = new Schema(
             type: Boolean,
             default: false,
         },
+        cost: {
+            type: Currency,
+            required: true,
+            min: 0,
+        },
         description: {
             type: String,
             required: true,
@@ -51,6 +56,6 @@ const partnerSchema = new Schema(
     }
 );
 
-const partner = mongoose.model("partner", partnerSchema);
+const promotion = mongoose.model("promotion", promotionSchema);
 
-module.exports = partner;
+module.exports = promotion;
