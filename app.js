@@ -8,6 +8,7 @@ const session = require("express-session");
 const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const authenticate = require("./authenticate");
+const config = require("./config");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -54,19 +55,19 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-function auth(req, res, next) {
-    console.log(req.user);
+// function auth(req, res, next) {
+//     console.log(req.user);
 
-    if (!req.user) {
-        const err = new Error("You are not authenticated!");
-        err.status = 401;
-        return next(err);
-    } else {
-        return next();
-    }
-}
-
-app.use(auth);
+//     if (!req.user) {
+//         const err = new Error("You are not authenticated!");
+//         err.status = 401;
+//         return next(err);
+//     } else {
+//         return next();
+//     }
+// }
+const url = config.mongoUrl;
+// app.use(auth);
 
 app.use(express.static(path.join(__dirname, "public")));
 
