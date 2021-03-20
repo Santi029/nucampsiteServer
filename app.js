@@ -55,18 +55,18 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// function auth(req, res, next) {
-//     console.log(req.user);
+function auth(req, res, next) {
+    console.log(req.user);
 
-//     if (!req.user) {
-//         const err = new Error("You are not authenticated!");
-//         err.status = 401;
-//         return next(err);
-//     } else {
-//         return next();
-//     }
-// }
-// app.use(auth);
+    if (!req.user) {
+        const err = new Error("You are not authenticated!");
+        err.status = 401;
+        return next(err);
+    } else {
+        return next();
+    }
+}
+app.use(auth);
 
 app.use(express.static(path.join(__dirname, "public")));
 
