@@ -66,7 +66,7 @@ app.use(passport.session());
 //         return next();
 //     }
 // }
-const url = config.mongoUrl;
+// const url = config.mongoUrl;
 // app.use(auth);
 
 app.use(express.static(path.join(__dirname, "public")));
