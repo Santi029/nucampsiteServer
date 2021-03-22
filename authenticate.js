@@ -81,11 +81,4 @@ exports.verifyAdmin = function authorizeUsersAccess(req, res, next) {
 };
 
 exports.verifyUser = passport.authenticate("jwt", { session: false });
-
-// TASK # 1:
-
-// Create a function named:
-// function verifyAdmin()
-
-// Create an export for this function:
 exports.verifyAdmin = passport.authenticate("jwt", { session: false });
