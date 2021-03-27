@@ -4,7 +4,7 @@ const User = require("./models/user");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const jwt = require("jsonwebtoken"); // used to create, sign, and verify tokens
-
+const FacebookTokenStrategy = require("passport-facebook-token");
 const config = require("./config.js");
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -33,41 +33,6 @@ exports.jwtPassport = passport.use(
     })
 );
 
-// Option 1
-// exports.jwtPassport = passport.use(
-//     new verifyAdmin(opts, (jwt_payload, done) => {
-//         console.log("JWT payload:", jwt_payload);
-//             if (err) {
-//                 return done(err, false);
-//             } else if (user) {
-//                 return done(null, user);
-//             } else {
-//                 return done(null, false);
-//             }
-//     })
-// );
-
-// Option 2
-// exports.verifyUser = function(req, res, next) {
-//     const admin = true;
-//     if (admin) {
-//         return true;
-//     } else (user) {
-//         return false;
-//     }
-// };
-
-// Option 3
-// exports.verifyUser = function(req, res, next) {
-//     user.verifyAdmin(req.user.admin)
-//     if (err) {
-//         return  res.status(err.status || 403), 'You are not authorized to perform this operation!';
-//     } else (user) {
-//         return next();
-//     }
-// };
-
-// Option 4
 exports.verifyAdmin = function authorizeUsersAccess(req, res, next) {
     if (req.query.admin === "true") {
         req.admin = true;
@@ -79,6 +44,37 @@ exports.verifyAdmin = function authorizeUsersAccess(req, res, next) {
         );
     }
 };
+
+exports.facebookPassport = passport.use(
+    new FacebookTokenStrategy(
+        {
+            clientID: config.facebook.clientId,
+            clientSecret: config.facebook.clientSecret,
+        },
+        (accessToken, refreshToken, profile, done) => {
+            User.findOne({ facebookId: profile.id }, (err, user) => {
+                if (err) {
+                    return done(err, false);
+                }
+                if (!err && user) {
+                    return done(null, user);
+                } else {
+                    user = new User({ username: profile.displayName });
+                    user.facebookId = profile.id;
+                    user.firstname = profile.name.givenName;
+                    user.lastname = profile.name.familyName;
+                    user.save((err, user) => {
+                        if (err) {
+                            return done(err, false);
+                        } else {
+                            return done(null, user);
+                        }
+                    });
+                }
+            });
+        }
+    )
+);
 
 exports.verifyUser = passport.authenticate("jwt", { session: false });
 exports.verifyAdmin = passport.authenticate("jwt", { session: false });

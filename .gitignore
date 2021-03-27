@@ -1,2 +1,4 @@
 node_modules
 bin/server.cert
+index.html
+config.js
