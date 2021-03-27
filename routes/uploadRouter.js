@@ -57,7 +57,7 @@ uploadRouter
     )
     .delete(
         cors.corsWithOptions,
-        uthenticate.verifyUser,
+        authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res) => {
             res.statusCode = 403;
