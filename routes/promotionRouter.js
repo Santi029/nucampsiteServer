@@ -1,12 +1,13 @@
 const express = require("express");
 const promotion = require("../models/promotion");
 const authenticate = require("../authenticate");
-
+const cors = require("./cors");
 const promotionRouter = express.Router();
 
 promotionRouter
     .route("/")
-    .get((req, res, next) => {
+    .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+    .get(cors.cors, (req, res, next) => {
         promotion
             .find()
             .then((promotions) => {
@@ -17,6 +18,7 @@ promotionRouter
             .catch((err) => next(err));
     })
     .post(
+        cors.corsWithOptions,
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
@@ -31,11 +33,17 @@ promotionRouter
                 .catch((err) => next(err));
         }
     )
-    .put(authenticate.verifyUser, (req, res) => {
-        res.statusCode = 403;
-        res.end("PUT operation not supported on /promotions");
-    })
+    .put(
+        cors.corsWithOptions,
+        authenticate.verifyUser,
+        authenticate.verifyAdmin,
+        (req, res) => {
+            res.statusCode = 403;
+            res.end("PUT operation not supported on /promotions");
+        }
+    )
     .delete(
+        cors.corsWithOptions,
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
@@ -57,15 +65,22 @@ promotionRouter
         res.setHeader("Content-Type", "text/plain");
         next();
     })
-    .get((req, res) => {
+    .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+    .get(cors.cors, (req, res, next) => {
         res.end(`Will send all info for ${req.params.promotionId} to you`);
     })
-    .post(authenticate.verifyUser, (req, res) => {
-        res.end(
-            `Will add the promotion: ${req.body.name} with description: ${req.body.description}`
-        );
-    })
+    .post(
+        cors.corsWithOptions,
+        authenticate.verifyUser,
+        authenticate.verifyAdmin,
+        (req, res) => {
+            res.end(
+                `Will add the promotion: ${req.body.name} with description: ${req.body.description}`
+            );
+        }
+    )
     .put(
+        cors.corsWithOptions,
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
@@ -76,6 +91,7 @@ promotionRouter
         }
     )
     .delete(
+        cors.corsWithOptions,
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
@@ -85,7 +101,8 @@ promotionRouter
 
 promotionRouter
     .route("/:promotionId/comments")
-    .get((req, res, next) => {
+    .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+    .get(cors.cors, (req, res, next) => {
         promotion
             .findById(req.params.promotionId)
             .then((promotion) => {
@@ -103,7 +120,7 @@ promotionRouter
             })
             .catch((err) => next(err));
     })
-    .post(authenticate.verifyUser, (req, res, next) => {
+    .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         promotion
             .findById(req.params.promotionId)
             .then((promotion) => {
@@ -127,13 +144,14 @@ promotionRouter
             })
             .catch((err) => next(err));
     })
-    .put(authenticate.verifyUser, (req, res) => {
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
         res.statusCode = 403;
         res.end(
             `PUT operation not supported on /promotions/${req.params.promotionId}/comments`
         );
     })
     .delete(
+        cors.corsWithOptions,
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
@@ -175,7 +193,8 @@ promotionRouter
 
 promotionRouter
     .route("/:promotionId/comments/:commentId")
-    .get((req, res, next) => {
+    .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+    .get(cors.cors, (req, res, next) => {
         promotion
             .findById(req.params.promotionId)
             .then((promotion) => {
@@ -199,13 +218,18 @@ promotionRouter
             })
             .catch((err) => next(err));
     })
-    .post(authenticate.verifyUser, (req, res) => {
-        res.statusCode = 403;
-        res.end(
-            `POST operation not supported on /promotions/${req.params.promotionId}/comments/${req.params.commentId}`
-        );
-    })
-    .put(authenticate.verifyUser, (req, res, next) => {
+    .post(
+        cors.corsWithOptions,
+        authenticate.verifyUser,
+        authenticate.verifyAdmin,
+        (req, res) => {
+            res.statusCode = 403;
+            res.end(
+                `POST operation not supported on /promotions/${req.params.promotionId}/comments/${req.params.commentId}`
+            );
+        }
+    )
+    .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         promotion
             .findById(req.params.promotionId)
             .then((promotion) => {
@@ -242,7 +266,7 @@ promotionRouter
             })
             .catch((err) => next(err));
     })
-    .delete(authenticate.verifyUser, (req, res, next) => {
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         promotion
             .findById(req.params.promotionId)
             .then((promotion) => {
