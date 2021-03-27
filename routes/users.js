@@ -3,11 +3,17 @@ const User = require("../models/user");
 const passport = require("passport");
 const router = express.Router();
 const authenticate = require("../authenticate");
+const cors = require("./cors");
 
 /* GET users listing. */
-router.get("/", authenticate.verifyAdmin, function (req, res, next) {
-    res.send("respond with a resource");
-});
+router.get(
+    "/",
+    cors.corsWithOptions,
+    authenticate.verifyAdmin,
+    function (req, res, next) {
+        res.send("respond with a resource");
+    }
+);
 
 router.post("/signup", (req, res) => {
     User.register(
