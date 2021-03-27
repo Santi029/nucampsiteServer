@@ -9,6 +9,7 @@ const FileStore = require("session-file-store")(session);
 const passport = require("passport");
 const authenticate = require("./authenticate");
 const config = require("./config");
+const uploadRouter = require("./routes/uploadRouter");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -97,6 +98,9 @@ app.use("/partners", partnerRouter);
 app.use(function (req, res, next) {
     next(createError(404));
 });
+
+// app.use File Upload
+app.use("/imageUpload", uploadRouter);
 
 // error handler
 app.use(function (err, req, res, next) {
