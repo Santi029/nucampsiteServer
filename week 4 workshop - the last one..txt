@@ -1,0 +1,10 @@
+Hector L. Santiago
+Node.js, Express and Mongodb
+
+Last week 4 workshop
+
+https://github.com/Santi029/nucampsiteServer
+
+Almost done.
+
+The only 2 subtask that I couldn't finish was the put and delete from the task #2. 
