@@ -92,15 +92,11 @@ favoriteRouter
             res.end(`PUT operation not supported on /favorites`);
         }
     )
-    .delete(
-        cors.corsWithOptions,
-        authenticate.verifyUser,
-        authenticate.verifyAdmin,
-        (req, res, next) => {
-            Favorite.findOne({ favorite });
-            res.end(`Deleting the favorite campsite`);
-        }
-    );
+    .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+        Favorite.findOne({ favorite });
+        Favorite.indexOf, Favorite.splice({ favorite });
+        res.end(`Deleting the favorite campsite`);
+    });
 
 // DELETE to /favorites/:campsiteId: When the user performs a DELETE operation on '/favorites/:campsiteId', use findOne to find the favorites document for the user.
 // If it exists, delete the campsite in the URL parameter req.params.campsiteId from its campsites array. There are multiple ways to approach this. Because you are deleting an element from an array and not a single document, you can not use the findOneAndDelete method. Instead, you could use a combination of indexOf and splice methods on the favorite.campsites array to remove the specified campsite. Alternatively, you could use the filter array method. Afterward, save the document then return a response with a status code of 200, a Content-Type header of 'application/json', and the favorite document.
