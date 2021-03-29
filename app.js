@@ -93,7 +93,7 @@ app.use("/users", usersRouter);
 app.use("/campsites", campsiteRouter);
 app.use("/promotions", promotionRouter);
 app.use("/partners", partnerRouter);
-
+app.use("/favorites", favoriteRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));

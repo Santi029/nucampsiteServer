@@ -13,6 +13,4 @@ const favoriteSchema = new Schema({
     },
 });
 
-favoriteSchema.plugin(passportLocalMongoose);
-
-module.exports = mongoose.model("favorite", favoriteSchema);
+module.exports = mongoose.model("favorites", favoriteSchema);
