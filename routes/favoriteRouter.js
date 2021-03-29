@@ -97,7 +97,8 @@ favoriteRouter
         authenticate.verifyUser,
         authenticate.verifyAdmin,
         (req, res, next) => {
-            res.end(`Deleting ${req.params.campsiteId} campsite`);
+            Favorite.findOne({ favorite });
+            res.end(`Deleting the favorite campsite`);
         }
     );
 
