@@ -5,19 +5,12 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const favoriteSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: favoriteSchema,
-        default: "",
+        ref: "User",
     },
     campsites: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: favoriteSchema,
-        default: "",
+        ref: "Campsite",
     },
-    // facebookId: String,
-    // admin: {
-    //     type: Boolean,
-    //     default: false,
-    // },
 });
 
 favoriteSchema.plugin(passportLocalMongoose);

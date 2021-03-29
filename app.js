@@ -10,7 +10,7 @@ const passport = require("passport");
 const authenticate = require("./authenticate");
 const config = require("./config");
 const uploadRouter = require("./routes/uploadRouter");
-
+const favoriteRouter = require("./routes/favoriteRouter");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
